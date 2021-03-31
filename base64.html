@@ -1,0 +1,87 @@
+<html>
+  <head>
+    <script language="JavaScript">
+      function go(){
+        var CNT1 = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","0","1","2","3","4","5","6","7","8","9","+","/"]
+        var CNT2 = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","0","1","2","3","4","5","6","7","8","9","-","_"]
+        var inputText = document.getElementById("inputText").value;
+        var decText = new Array();
+        var hexText = new Array();
+        var binText = new Array();
+        for(i=0; i<inputText.length; i++){
+          //alert(inputText.charCodeAt(i));
+          decText[i] = inputText.charCodeAt(i);
+          hexText[i] = decText[i].toString(16);
+          binText[i] = ("00000000" + decText[i].toString(2)).slice( -8 );
+        }
+        //alert(decText);
+        document.getElementById("decText").value=decText;
+        document.getElementById("decText").title=decText;
+
+        document.getElementById("hexText").value=hexText;
+        document.getElementById("hexText").title=hexText;
+
+        document.getElementById("binText").value=binText;
+        document.getElementById("binText").title=binText;
+
+        var bitText=document.getElementById("binText").value.replaceAll(",","");
+        var bitTextStr = "" + bitText;
+        var orgLength = bitText.length;
+        var step = orgLength % 6;
+        //alert(step);
+        for (i=0;i<(6-step);i++){
+          bitTextStr = bitTextStr + "0";
+        }
+        //alert(bitText);
+        //alert(bitTextStr);
+        var _6bitText = "";
+        //alert(_6bitText.length);
+        //alert(bitTextStr.length);
+        for (i=0;i<bitTextStr.length;i++){
+          _6bitText = _6bitText + bitTextStr.substr(i,1);
+          if((i+1) % 6 ==0 && i != bitTextStr.length - 1){
+            _6bitText = _6bitText + ","
+          }
+        }
+        document.getElementById("6bitText").value=_6bitText;
+        document.getElementById("6bitText").title=_6bitText;
+
+        var _6bitTexts = _6bitText.split(",");
+        var out1Texts = new Array();
+        var out3Texts = new Array();
+        for(i=0; i<_6bitTexts.length; i++){
+          var tmpBin = _6bitTexts[i];
+          var tmpDec = parseInt(tmpBin, 2);
+          out1Texts[i] = CNT1[parseInt(_6bitTexts[i], 2)]
+          out3Texts[i] = CNT2[parseInt(_6bitTexts[i], 2)]
+        }
+        document.getElementById("out1Text").value=out1Texts;
+        document.getElementById("out1Text").value=document.getElementById("out1Text").value.replaceAll(",","");
+        document.getElementById("out1Text").title=document.getElementById("out1Text").value
+
+        document.getElementById("out3Text").value=out3Texts;
+        document.getElementById("out3Text").value=document.getElementById("out3Text").value.replaceAll(",","");
+        document.getElementById("out3Text").title=document.getElementById("out3Text").value
+
+        var out2Text = document.getElementById("out1Text").value;
+        for(i=0; i<(out2Text.length % 4); i++){
+          out2Text = out2Text + "=";
+        }
+        document.getElementById("out2Text").value=out2Text;
+        document.getElementById("out2Text").value=out2Text;
+
+      }
+    </script>
+  </head>
+  <body>
+    Base64変換ツール<br>
+    inputText=<input type="text" id="inputText" value=""><input type="button" name="changeText" value="go" onClick="go()"><br>
+    ASCII=<input type="text" id="decText" value=""><br>
+    16進表現=<input type="text" id="hexText" value=""><br>
+    2進表現=<input type="text" id="binText" value=""><br>
+    6ビットずつに分割=<input type="text" id="6bitText" value=""><br>
+    変換表により、4文字ずつ変換=<input type="text" id="out1Text" value=""><br>
+    2文字余るので、2文字分 = 記号を追加して4文字にする=<input type="text" id="out2Text" value=""><br>
+    base64url=<input type="text" id="out3Text" value=""><br>
+  </body>
+</html>
